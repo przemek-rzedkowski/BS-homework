@@ -1,0 +1,7 @@
+plugins:
+  - "eslint-plugin-playwright"
+
+parserOptions:
+  project: "./tsconfig.json"
+  sourceType: module
+  parser: "@typescript-eslint/parser"

@@ -1,0 +1,16 @@
+{
+  "name": "bs-homework",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "pw:open": "playwright test --ui"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.48.1",
+    "@types/node": "^22.7.7",
+    "prettier": "3.3.3"
+  }
+}
