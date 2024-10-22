@@ -14,10 +14,5 @@
       "type": "integer"
     }
   },
-  "required": [
-    "userId",
-    "title",
-    "body",
-    "id"
-  ]
+  "required": ["userId", "title", "body", "id"]
 }

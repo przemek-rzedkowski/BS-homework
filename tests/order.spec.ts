@@ -1,9 +1,10 @@
 import { expect } from "@playwright/test";
 import { test } from "@helpers/base";
+import commonJsonData from "@data/common.json";
+import cartJsonData from "@data/cart.json";
 
-const commonJsonData = require("../test-data/common.json");
-const cartJsonData = require("../test-data/cart.json");
 let itemPrice: string;
+let itemName: string;
 
 test.describe("Cart", () => {
   test.beforeEach(async ({ page, header, loginPage, shopPage }) => {
@@ -18,32 +19,31 @@ test.describe("Cart", () => {
       .soft(await shopPage.locators.getInventoryItem().count())
       .toBeGreaterThan(0);
 
-    itemPrice = await shopPage.locators.getOnesiePrice().innerText();
+    itemPrice = await shopPage.locators.getFirstItemPrice().innerText();
+    itemName = await shopPage.locators.getFirstItemName().innerText();
 
-    await shopPage.locators.getAddOnesieToCartButton().click();
+    await shopPage.locators.getFirstAddToCartButton().click();
     expect
       .soft(header.locators.getShoppingCartBadge())
       .toContainText(cartJsonData.cartCounter);
     expect
-      .soft(shopPage.locators.getRemoveOnesieFromCartButton())
+      .soft(shopPage.locators.getRemoveFirstItemFromCartButton())
       .toBeVisible();
   });
 
   test("should place an order", async ({
-    page,
     header,
     shopPage,
     cartPage,
     addressPage,
     checkoutPage,
+    summaryPage,
   }) => {
     await shopPage.locators.getProceedToCartButton().click();
     expect
       .soft(cartPage.locators.getItemQuantity())
       .toContainText(cartJsonData.cartCounter);
-    expect
-      .soft(cartPage.locators.getItemTitle())
-      .toContainText(cartJsonData.itemTitle);
+    expect.soft(cartPage.locators.getItemTitle()).toContainText(itemName);
     expect.soft(cartPage.locators.getItemPrice()).toContainText(itemPrice);
     await cartPage.locators.getCheckoutButton().click();
 
@@ -59,9 +59,7 @@ test.describe("Cart", () => {
     expect
       .soft(checkoutPage.locators.getItemQuantity())
       .toContainText(cartJsonData.cartCounter);
-    expect
-      .soft(checkoutPage.locators.getItemTitle())
-      .toContainText(cartJsonData.itemTitle);
+    expect.soft(checkoutPage.locators.getItemTitle()).toContainText(itemName);
     expect.soft(checkoutPage.locators.getItemPrice()).toContainText(itemPrice);
     const taxLabel = await checkoutPage.locators.getTaxLabel().innerText();
     const tax = +taxLabel.substring(taxLabel.indexOf("$") + 1);
@@ -71,7 +69,7 @@ test.describe("Cart", () => {
     const total = +totalLabel.substring(totalLabel.indexOf("$") + 1);
     expect(total).toEqual(+itemPrice.substring(1) + tax);
     await checkoutPage.locators.getSubmitButton().click();
-    expect((await page.$(`text=${cartJsonData.summaryText}`)).isVisible());
+    expect(summaryPage.locators.getCompleteHeader()).toBeVisible();
     expect(header.locators.getShoppingCartBadge()).toBeHidden();
   });
 
@@ -79,9 +77,9 @@ test.describe("Cart", () => {
     header,
     shopPage,
   }) => {
-    await shopPage.locators.getRemoveOnesieFromCartButton().click();
+    await shopPage.locators.getRemoveFirstItemFromCartButton().click();
     expect(header.locators.getShoppingCartBadge()).toBeHidden();
-    expect(shopPage.locators.getAddOnesieToCartButton()).toBeVisible();
+    expect(shopPage.locators.getFirstAddToCartButton()).toBeVisible();
   });
 
   test("should be able to remove product from the cart on the cart page", async ({
@@ -93,11 +91,9 @@ test.describe("Cart", () => {
     expect
       .soft(cartPage.locators.getItemQuantity())
       .toContainText(cartJsonData.cartCounter);
-    expect
-      .soft(cartPage.locators.getItemTitle())
-      .toContainText(cartJsonData.itemTitle);
+    expect.soft(cartPage.locators.getItemTitle()).toContainText(itemName);
     expect.soft(cartPage.locators.getItemPrice()).toContainText(itemPrice);
-    await cartPage.locators.getRemoveOnesieFromCartButton().click();
+    await cartPage.locators.getRemoveFirstItemFromCartButton().click();
     expect(checkoutPage.locators.getItemQuantity()).toBeHidden();
     expect(checkoutPage.locators.getItemTitle()).toBeHidden();
     expect(checkoutPage.locators.getItemPrice()).toBeHidden();

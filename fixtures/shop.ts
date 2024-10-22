@@ -5,14 +5,21 @@ export class ShopPage {
 
   public locators = {
     getInventoryItem: () => this.page.getByTestId("inventory-item"),
-    getAddOnesieToCartButton: () =>
-      this.page.getByTestId("add-to-cart-sauce-labs-onesie"),
-    getRemoveOnesieFromCartButton: () =>
-      this.page.getByTestId("remove-sauce-labs-onesie"),
     getProceedToCartButton: () => this.page.getByTestId("shopping-cart-link"),
-    getOnesiePrice: () =>
-      this.page.locator(
-        'xpath = //div[text()="Sauce Labs Onesie"]/ancestor::div[@data-test="inventory-item-description"]//div[@data-test="inventory-item-price"]',
-      ),
+    // I've decided to pick first item on the page in case any item will be removed in the next iteration of the page
+    // I am aware that this site is likely not going to change, but I think it would be poor practice to rely on a specific shopping item
+    // Additionally data-test attributes are so specific on this page that I was forced to use Xpath
+    getFirstAddToCartButton: () =>
+      this.page
+        .locator("xpath = //button[starts-with(@id, 'add-to-cart-sauce-labs')]")
+        .first(),
+    getRemoveFirstItemFromCartButton: () =>
+      this.page
+        .locator("xpath = //button[starts-with(@id, 'remove-sauce-labs')]")
+        .first(),
+    getFirstItemPrice: () =>
+      this.page.getByTestId("inventory-item-price").first(),
+    getFirstItemName: () =>
+      this.page.getByTestId("inventory-item-name").first(),
   };
 }

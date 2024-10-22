@@ -4,8 +4,11 @@
     "target": "ESNext",
     "lib": ["es5", "dom"],
     "types": ["node"],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@data/*": ["test-data/*"]
     },
     "moduleResolution": "node"
   },

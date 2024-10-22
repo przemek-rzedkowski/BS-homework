@@ -5,7 +5,7 @@ export class CheckoutPage {
 
   public locators = {
     getItemQuantity: () => this.page.getByTestId("item-quantity"),
-    getItemTitle: () => this.page.getByTestId("item-2-title-link"),
+    getItemTitle: () => this.page.getByTestId("inventory-item-name"),
     getItemPrice: () => this.page.getByTestId("inventory-item-price"),
     getTaxLabel: () => this.page.getByTestId("tax-label"),
     getTotalPriceLabel: () => this.page.getByTestId("total-label"),
