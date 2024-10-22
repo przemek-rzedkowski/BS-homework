@@ -5,7 +5,7 @@
     "lib": ["es5", "dom"],
     "types": ["node"],
     "paths": {
-      "@helpers/*": ["helpers/*"],
+      "@helpers/*": ["helpers/*"]
     },
     "moduleResolution": "node"
   },
