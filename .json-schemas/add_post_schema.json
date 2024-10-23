@@ -2,13 +2,13 @@
   "type": "object",
   "properties": {
     "userId": {
-      "type": "integer"
+      "type": ["integer", "string"]
     },
     "title": {
-      "type": "string"
+      "type": ["integer", "string"]
     },
     "body": {
-      "type": "string"
+      "type": ["integer", "string"]
     },
     "id": {
       "type": "integer"
